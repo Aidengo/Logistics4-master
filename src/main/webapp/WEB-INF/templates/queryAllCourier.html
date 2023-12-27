@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>快递员列表</title>
+  <link rel="stylesheet" href="<%=basePath%>../../logincss/courier.css">
+  <link rel="stylesheet" href="<%=basePath%>../../logincss/style.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<header>
+    <h1>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  物流仓库信息 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 欢迎管理员:root </h1>
+</header>
+<nav>
+  <ul>
+    <li><a href="/home">返回主页</a></li>
+    <li><a href="/queryWareHouse">物流仓库管理</a></li>
+    <li><a href="/queryAllCourier">快递员管理</a></li>
+    <li><a href="/queryAllOrder">物流订单业务管理</a></li>
+    <li><a href="/queryAllItem">物资管理</a></li>
+  </ul>
+</nav>
+<h2>
+  快递员信息列表
+  <div id="a" style="margin-top: 15px">
+    <input type="add" value="添加快递员" onclick="showAddModal()" style="margin:0 5px 5px 0">
+    <input type="update" value="更新快递员" onclick="showUpdateModal()" style="margin:0 -20px 5px 0">
+  </div>
+</h2>
+<div style="float:left;">
+<form th:action="@{/deleteCouriersAction}" method="post">
+  <table  style="border-collapse: collapse; width: 390% " border=" 1 " >
+    <thead>
+    <tr>
+      <th style="width: 5px">工号</th>
+      <th style="width: 20px">姓名</th>
+      <th style="width: 15px">性别</th>
+      <th style="width: 15px">年龄</th>
+      <th style="width: 50px">联系电话</th>
+      <th style="width: 30px">住址</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="couriers : ${couriers}">
+      <td th:text="${couriers.idCard}"></td>
+      <td th:text="${couriers.name}"></td>
+      <td th:text="${couriers.sex}"></td>
+      <td th:text="${couriers.age}"></td>
+      <td th:text="${couriers.phonenumber}"></td>
+      <td th:text="${couriers.address}"></td>
+    </tr>
+    </tbody>
+  </table>
+  <p>请输入要开除的快递员的名称：</p>
+  <input id="name" name="name" type="text">
+  <input type="submit" value="开除" onclick="showDeleteMessage()">
+</form>
+</div>
+
+<div id="addModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeAddModal()">×</span>
+    <form th:action="@{/addCourierAction}" method="post">
+  <h1>添加快递员</h1>
+  <p>姓名:<input  name="name" type="text"></p>
+  <p>性别:<input name="sex" type="text"></p>
+  <p>年龄:<input  name="age" type="text"></p>
+  <p>地址:<input  name="address" type="text"></p>
+  <p>联系电话:<input  name="phonenumber" type="text"></p>
+  <input type="submit" class="button" value="添加" onclick="showAddMessage()">
+</form>
+  </div>
+</div>
+
+
+
+<div id="updateModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeUpdateModal()">×</span>
+<form th:action="@{/updateCourierInfo}">
+  <p>更新快递员信息</p>
+  <p>请输入要更新信息的快递员的名字：</p>
+  <p>姓名:<input  name="name" type="text"></p>
+  <p>请输入新的信息：</p>
+  <p>姓名:<input  name="newname" type="text"></p>
+  <p>性别:<input name="sex" type="text"></p>
+  <p>年龄:<input  name="age" type="text"></p>
+  <p>地址:<input  name="address" type="text"></p>
+  <p>联系电话:<input  name="phonenumber" type="text"></p>
+  <input type="submit" class="button" value="更新" onclick="updateAddMessage()">
+</form>
+  </div>
+</div>
+
+
+</body>
+<script>
+  function showDeleteMessage() {
+    alert("开除成功");
+  }
+</script>
+<script>
+  function showAddModal() {
+    var modal = document.getElementById("addModal");
+    modal.style.display = "block";
+  }
+  function closeAddModal() {
+    var modal = document.getElementById("addModal");
+    modal.style.display = "none";
+  }
+</script>
+<script>
+  function showUpdateModal() {
+    var modal = document.getElementById("updateModal");
+    modal.style.display = "block";
+  }
+  function closeUpdateModal() {
+    var modal = document.getElementById("updateModal");
+    modal.style.display = "none";
+  }
+</script>
+<script>
+  function updateTime() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    hours = checkTime(hours);
+    minutes = checkTime(minutes);
+    seconds = checkTime(seconds);
+    document.getElementById("time").innerHTML = hours + ":" + minutes + ":" + seconds;
+    setTimeout(updateTime, 1000);
+  }
+
+  function checkTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+
+  updateTime();
+</script>
+<!--<footer>-->
+<!--  <p>© 2021 XXX物流管理系统</p>-->
+<!--</footer>-->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+<!--<script src="script.js"></script>-->
+<footer>
+  <p>快递员管理页面</p>
+</footer>
+</html>
